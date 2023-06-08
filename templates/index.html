@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+  <title>Flask Ana Sayfa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+     <style>
+        .sehir {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .alt-menu {
+            display: none;
+        }
+        .alt-menu.active {
+            display: block;
+        }
+        .seh{
+            color:white;
+            }
+            a{
+                color:white;
+                }
+    </style>
+</head>
+<body>
+
+<div class="container">
+        <div class="row">
+
+            <div class="col-6">
+
+
+                     {% for index,sehir in sehirler_dict.items() %}
+                         <p>
+
+                      <button class="btn btn-primary" id="{{index}}"  type="button" data-toggle="collapse" data-target="#collapse{{index}}" aria-expanded="false" aria-controls="collapse{{index}}">
+                       <a href="/secilen_il/{{index}}" class=".seh">{{sehir}} </a>
+                      </button>
+                    </p>
+                    <div class="collapse {% if index == secilen_index %}active{% endif %}" id="collapse{{index}}">
+                      <div class="card card-body">
+                      <ul class="list-group" data-toggle="collapse">
+                          <li class="list-group-item disabled">Cras justo odio</li>
+                          <li class="list-group-item">Dapibus ac facilisis in</li>
+                          <li class="list-group-item">Morbi leo risus</li>
+                          <li class="list-group-item">Porta ac consectetur ac</li>
+                          <li class="list-group-item">Vestibulum at eros</li>
+                        </ul>
+                      </div>
+                    </div>
+                 <p>
+                    {% endfor %}
+            </div>
+        </div>
+
+</div>
+
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function() {
+            $(".sehir").click(function() {
+                var target = $(this).data("target");
+                $(target).toggleClass("active");
+            });
+        });
+    </script>
+</body>
+</html>

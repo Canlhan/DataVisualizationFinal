@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+  <title>Flask Ana Sayfa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+     <style>
+        .sehir {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .alt-menu {
+            display: none;
+        }
+        .alt-menu.active {
+            display: block;
+        }
+        .seh{
+            color:white;
+            }
+            a{
+                color:Black;
+                }
+    </style>
+</head>
+<body>
+
+<div class="container">
+        <div class="row">
+
+            <div class="col-6">
+
+
+                     {% for index,sehir in sehirler_dict.items() %}
+                         <p>
+
+                      <button class="btn btn-primary" id="{{index}}"  type="button" data-toggle="collapse" data-target="#collapse{{index}}" aria-expanded="false" aria-controls="collapse{{index}}">
+                       <a href="/secilen_il/{{index}}" class=".seh">{{sehir}} </a>
+                      </button>
+                    </p>
+                    <div class="collapse {% if index == secilen_index %}active{% endif %}" id="collapse{{index}}">
+                      <div class="card card-body">
+                      <ul class="list-group" data-toggle="collapse">
+
+                         {% for index,ilce in ilceler_dict.items() %}
+
+                                <li> <a href="/secilen_ilce/{{ index }}?sehir_id={{ secilen_index }}">{{ ilce }}</a> </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                 <p>
+                    {% endfor %}
+            </div>
+            <div class="col-6">
+              <!-- Diğer içerikler -->
+              <!-- Grafik yerleştirilecek bölüm -->
+              <div id="grafik">
+                  <script>
+                     var ilceData = {{ il_sonuc | tojson | safe }};  // Flask'tan gelen ilce_listesi dizisini JavaScript değişkenine aktarıyoruz
+
+                        // Veri setini oluşturma
+                        console.log(ilceData);
+                        var data = [
+                          {
+                            labels: ["Recep Tayyip Erdoğan", "Muharrem İnce", "Meral AKşener", "Selahattin Demirtaş", "Temel", "Doğu"],
+                             values: [ilceData[0], ilceData[1], ilceData[2], ilceData[3], ilceData[4], ilceData[5]],
+                             type: 'pie'
+                          }
+                        ];
+
+                        var layout = {
+                          title: 'İlçe Oy Dağılımı'
+                        };
+
+                        // Plotly grafik oluşturma
+                        Plotly.newPlot('grafik', data, layout);
+                         </script>
+              </div>
+            </div>
+        </div>
+
+</div>
+
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function() {
+        var secilenIndex = {{ secilen_index }}; // Flask tarafından gelen index değeri
+
+        if (secilenIndex !== null) {
+            var target = "#collapse" + secilenIndex;
+            $(target).addClass("show");
+                    }
+            });
+
+    </script>
+
+<script>
+
+</script>
+</body>
+</html>
